@@ -1,3 +1,4 @@
+import { Canvas } from './Canvas';
 import { Action } from './Game';
 
 export class Inputs {
@@ -9,7 +10,8 @@ export class Inputs {
   }
 
   public onPlayerStart(setActionOccurrence: (state: Action) => void) {
-    window.addEventListener('click', () => setActionOccurrence('click'))
-    window.addEventListener('keyup', () => setActionOccurrence('click'))
+    const canvas = Canvas.getCanvas();
+    canvas.addEventListener('click', () => setActionOccurrence('click'))
+    canvas.addEventListener('keyup', () => setActionOccurrence('click'))
   }
 }
