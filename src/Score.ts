@@ -11,7 +11,9 @@ export class Score extends GameElement {
     this.points = 0;
   }
 
-  public drawImage(): void {}
+  public drawImage(): void {
+    this.registerPoints();
+  }
 
   private registerPoints() {
     const points = localStorage.getItem('points');
@@ -19,13 +21,13 @@ export class Score extends GameElement {
     if (points) {
       const oldPoints = JSON.parse(points);
       const newPoints = {
-        points: this.points,
+        current: this.points,
         best: oldPoints.best > this.points ? oldPoints.best : this.points
       };
       
       localStorage.setItem('points', JSON.stringify(newPoints));
     } else {
-      const newPoints = { points: this.points, best: this.points };
+      const newPoints = { current: this.points, best: this.points };
       localStorage.setItem('points', JSON.stringify(newPoints));
     }
   }
