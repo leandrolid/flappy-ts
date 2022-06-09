@@ -1,6 +1,8 @@
 import { DrawImageParams, GameElement, GameElementParams } from './GameElement';
 
 export class ScreenGameOver extends GameElement {
+  private points: { current: number; best: number }
+
   constructor(elementInfo: GameElementParams) {
     super(elementInfo);
     this.sourceX = 133;
@@ -11,6 +13,7 @@ export class ScreenGameOver extends GameElement {
     this.destY = 100;
     this.destWidth = this.sourceWidth;
     this.destHeight = this.sourceHeight;
+    this.points = { current: 0, best: 0 };
   }
 
   private drawPoints(points: number, destY: number) {
@@ -24,15 +27,38 @@ export class ScreenGameOver extends GameElement {
     this.elementInfo.context.drawImage(this.elementInfo.source, sourceX, sourceY, 44, 44, this.destX + 29, this.destY + 90, 40, 40)
   }
 
+  private setPoints() {
+    const points = localStorage.getItem('points');
+
+    if(points) {
+      this.points = JSON.parse(points);
+    }
+  }
+
+  private setCoinForPointsRange() {
+    if (this.points.current <= 10) {
+      this.drawCoins(0, 78);
+    }
+    
+    if (this.points.current > 10 && this.points.current <= 20) {
+      this.drawCoins(48, 78);
+    }
+
+    if (this.points.current > 20 && this.points.current <= 30) {
+      this.drawCoins(0, 124);
+    }
+
+    if (this.points.current > 30) {
+      this.drawCoins(48, 124);
+    }
+  }
+
   public drawImage(params?: DrawImageParams): void {
       super.drawImage(params);
-      this.drawCoins(0, 78);
-      this.drawCoins(48, 78);
-      this.drawCoins(0, 124);
-      this.drawCoins(48, 124);
+      this.setPoints();
+      this.setCoinForPointsRange();
 
-      const points = JSON.parse(localStorage.getItem('points')!);
-      this.drawPoints(points.current, this.destY + 95);
-      this.drawPoints(points.best, this.destY + 135);
+      this.drawPoints(this.points.current, this.destY + 95);
+      this.drawPoints(this.points.best, this.destY + 135);
   }
 }
