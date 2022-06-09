@@ -1,20 +1,29 @@
 import { Inputs } from './Inputs';
 import { Elements } from './main';
+import { Flappy } from './Flappy';
+import { Floor } from './Floor';
+import { Background } from './Background';
+import { PipeBottom } from './PipeBottom';
+import { PipeTop } from './PipeTop';
+import { PipePair } from './PipePair';
+import { ScreenReady } from './ScreenReady';
+import { ScreenGameOver } from './ScreenGameOver';
+import { Sprites } from './Sprites';
+import spritesFile from './assets/sprites.png'
 
-export type GameScreen = 'ready' | 'playing' | 'gameOver'
-
-
+export type GameScreen = 'ready' | 'playing' | 'gameOver';
 export type Action = 'click' | 'collision'
+
 export class Game {
-  private gameScreen: GameScreen = 'ready'
+  private elements: Elements;
   private frames: number;
   private gameScreen: GameScreen;
   private isTapping: boolean;
 
   constructor(
     private context: CanvasRenderingContext2D,
-    private elements: Elements,
     ) {
+    this.elements = Object()
     this.frames = 0;
     this.gameScreen = 'ready';
     this.isTapping = false;
@@ -22,6 +31,21 @@ export class Game {
 
   private clearScreen() {
     this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height)
+  }
+
+  public registerElements() {
+    const elementInfo = { source: Sprites.getSprites(spritesFile), context: this.context };
+    const pipeBottom = new PipeBottom(elementInfo)
+    const pipeTop = new PipeTop(elementInfo)
+
+    this.elements = {
+      background: new Background(elementInfo),
+      pipePair: new PipePair(elementInfo, pipeTop, pipeBottom),
+      floor: new Floor(elementInfo),
+      flappy: new Flappy(elementInfo),
+      screenReady: new ScreenReady(elementInfo),
+      screenGameOver: new ScreenGameOver(elementInfo),
+    }
   }
 
   private setGameState(action: Action) {
@@ -48,7 +72,7 @@ export class Game {
 
   registerInputs() {
     const inputs = new Inputs()
-    inputs.onPlayerTap(this.setIsClicked.bind(this))
+    inputs.onPlayerTap(this.setIsTapping.bind(this))
     inputs.onPlayerStart(this.setGameState.bind(this))
   }
 
