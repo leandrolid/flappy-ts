@@ -42,7 +42,7 @@ export class Game {
     this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height)
   }
 
-  public registerElements() {
+  public setNewGameElements() {
     const elementInfo = { source: Sprites.getSprites(spritesFile), context: this.context };
     const pipeBottom = new PipeBottom(elementInfo)
     const pipeTop = new PipeTop(elementInfo)
@@ -70,7 +70,7 @@ export class Game {
     if (action === 'click' && this.gameScreen === 'gameOver') {
       if (this.elements.screenGameOver.verifyClickOnButton(clickPosition)) {
         this.gameScreen = 'playing';
-        this.registerElements();
+        this.setNewGameElements();
       }
     }
   }

@@ -10,7 +10,7 @@ class App {
 
   private registerGame() {
     const game = new Game(this.context);
-    game.registerElements();
+    game.setNewGameElements();
     game.registerInputs();
     game.initialize()
   }
