@@ -60,7 +60,7 @@ export class Game {
     }
   }
 
-  private setGameState(action: Action) {
+  private setActionOccurrence(action: Action) {
     if (action === 'collision') {
       this.gameScreen = 'gameOver';
     }
@@ -85,7 +85,7 @@ export class Game {
   public registerInputs() {
     const inputs = new Inputs()
     inputs.onPlayerTap(this.setIsTapping.bind(this))
-    inputs.onPlayerStart(this.setGameState.bind(this))
+    inputs.onPlayerStart(this.setActionOccurrence.bind(this))
   }
 
   public initialize() {
@@ -101,7 +101,7 @@ export class Game {
           isTapping: this.isTapping,
           frames: this.frames,
           pipesPositions: elements.pipePair.getPositions(),
-          onFlappyCollision: this.setGameState.bind(this)
+          onFlappyCollision: this.setActionOccurrence.bind(this)
         });
       }
     }

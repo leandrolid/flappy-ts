@@ -8,8 +8,8 @@ export class Inputs {
     window.addEventListener('mousedown', () => setIsTapping(timer));
   }
 
-  public onPlayerStart(setGameState: (state: Action) => void) {
-    window.addEventListener('click', () => setGameState('click'))
-    window.addEventListener('keyup', () => setGameState('click'))
+  public onPlayerStart(setActionOccurrence: (state: Action) => void) {
+    window.addEventListener('click', () => setActionOccurrence('click'))
+    window.addEventListener('keyup', () => setActionOccurrence('click'))
   }
 }
