@@ -1,5 +1,5 @@
-import { GameElement } from './GameElement';
 import { Inputs } from './Inputs';
+import { Elements } from './main';
 
 export type GameScreen = 'ready' | 'playing' | 'gameOver'
 
@@ -10,8 +10,7 @@ export class Game {
 
   constructor(
     private context: CanvasRenderingContext2D,
-    private elements: GameElement[],
-    private pipePair: GameElement
+    private elements: Elements,
     ) {
     this.frames = 0;
     this.isClicked = false
@@ -45,26 +44,23 @@ export class Game {
   public initialize() {
     this.clearScreen();
 
-    const elements = [...this.elements];
+    const { screenReady, screenGameOver, ...elements } = this.elements;
 
-    const screenGameOver = elements.pop();
-    const screenReady = elements.pop();
-
-    elements.forEach((element) => {
+    for (const element of Object.values(elements)) {
       element.drawImage();
 
       if (this.gameScreen === 'playing') {
         element.action({
           isClicked: this.isClicked,
           frames: this.frames,
-          pipesPositions: this.pipePair.getPositions(),
+          pipesPositions: elements.pipePair.getPositions(),
           onFlappyCollision: this.setGameState.bind(this)
         });
       }
-    });
+    }
 
-    if (this.gameScreen === 'gameOver') screenGameOver?.drawImage()
-    if (this.gameScreen === 'ready') screenReady?.drawImage()
+    if (this.gameScreen === 'gameOver') screenGameOver.drawImage()
+    if (this.gameScreen === 'ready') screenReady.drawImage()
 
     this.registerFrames();
     requestAnimationFrame(() => this.initialize())
