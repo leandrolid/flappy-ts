@@ -82,7 +82,7 @@ export class Game {
     timer = setTimeout(() => this.isTapping = false, 150);
   }
 
-  registerInputs() {
+  public registerInputs() {
     const inputs = new Inputs()
     inputs.onPlayerTap(this.setIsTapping.bind(this))
     inputs.onPlayerStart(this.setGameState.bind(this))
