@@ -5,6 +5,7 @@ export class Inputs {
     let timer: number | undefined;
 
     window.addEventListener('keydown', () => setIsTapping(timer));
+    window.addEventListener('mousedown', () => setIsTapping(timer));
   }
 
   public onPlayerStart(setGameState: (state: Action) => void) {
