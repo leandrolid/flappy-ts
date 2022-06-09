@@ -20,8 +20,16 @@ export class ScreenGameOver extends GameElement {
     this.elementInfo.context.fillText(`${points}`, this.destX + this.destWidth - 22, destY);
   }
 
+  private drawCoins(sourceX: number, sourceY: number) {
+    this.elementInfo.context.drawImage(this.elementInfo.source, sourceX, sourceY, 44, 44, this.destX + 29, this.destY + 90, 40, 40)
+  }
+
   public drawImage(params?: DrawImageParams): void {
       super.drawImage(params);
+      this.drawCoins(0, 78);
+      this.drawCoins(48, 78);
+      this.drawCoins(0, 124);
+      this.drawCoins(48, 124);
 
       const points = JSON.parse(localStorage.getItem('points')!);
       this.drawPoints(points.current, this.destY + 95);
