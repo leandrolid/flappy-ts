@@ -1,15 +1,14 @@
-import { GameScreen } from './Game';
+import { Action } from './Game';
 
 export class Inputs {
-  public onPlayerTap(setIsClicked: (timer: number | undefined) => void ) {
+  public onPlayerTap(setIsTapping: (timer: number | undefined) => void ) {
     let timer: number | undefined;
 
-    window.addEventListener('mouseup', () => setIsClicked(timer));
-    window.addEventListener('keyup', () => setIsClicked(timer));
+    window.addEventListener('keydown', () => setIsTapping(timer));
   }
 
-  public onPlayerStart(setGameState: (state: GameScreen) => void) {
-    window.addEventListener('click', () => setGameState('playing'))
-    window.addEventListener('keypress', () => setGameState('playing'))
+  public onPlayerStart(setGameState: (state: Action) => void) {
+    window.addEventListener('click', () => setGameState('click'))
+    window.addEventListener('keyup', () => setGameState('click'))
   }
 }
