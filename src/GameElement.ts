@@ -15,7 +15,6 @@ export interface DrawImageParams {
 }
 
 export class GameElement {
-  getPositions(): any {}
   sourceX: number;
   sourceY: number;
   sourceWidth: number;

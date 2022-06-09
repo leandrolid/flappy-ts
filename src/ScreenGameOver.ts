@@ -1,3 +1,4 @@
+import { ClickPosition } from './Game';
 import { DrawImageParams, GameElement, GameElementParams } from './GameElement';
 
 export class ScreenGameOver extends GameElement {
@@ -14,6 +15,20 @@ export class ScreenGameOver extends GameElement {
     this.destWidth = this.sourceWidth;
     this.destHeight = this.sourceHeight;
     this.points = { current: 0, best: 0 };
+  }
+
+  public verifyClickOnButton({ clickX, clickY }: ClickPosition) { // 
+    const button = {
+      x: this.destX + 73,
+      y: this.destY + this.destHeight - 29,
+      width: 82,
+      height: 28,
+    }
+    if(clickX >= button.x && clickX <= button.x + button.width && clickY >= button.y && clickY <= button.y + button.height){
+      return true;
+    }
+
+    return false;
   }
 
   private drawPoints(points: number, destY: number) {

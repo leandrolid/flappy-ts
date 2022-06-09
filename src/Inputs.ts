@@ -1,5 +1,5 @@
 import { Canvas } from './Canvas';
-import { Action } from './Game';
+import { Action, ClickPosition } from './Game';
 
 export class Inputs {
   public onPlayerTap(setIsTapping: (timer: number | undefined) => void ) {
@@ -9,9 +9,11 @@ export class Inputs {
     window.addEventListener('mousedown', () => setIsTapping(timer));
   }
 
-  public onPlayerStart(setActionOccurrence: (state: Action) => void) {
+  public onPlayerStart(setActionOccurrence: (state: Action, clickPosition: ClickPosition) => void) {
     const canvas = Canvas.getCanvas();
-    canvas.addEventListener('click', () => setActionOccurrence('click'))
-    canvas.addEventListener('keyup', () => setActionOccurrence('click'))
+    canvas.addEventListener('click', ({ clientX: clickX, clientY: clickY }) => {
+      setActionOccurrence('click', { clickX, clickY })
+    })
+    // canvas.addEventListener('touchstart', ({  }) => setActionOccurrence('click'))
   }
 }

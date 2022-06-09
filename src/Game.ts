@@ -10,19 +10,19 @@ import { ScreenGameOver } from './ScreenGameOver';
 import { Sprites } from './Sprites';
 import spritesFile from './assets/sprites.png'
 import { Score } from './Score';
-import { GameElement } from './GameElement';
 
 export type GameScreen = 'ready' | 'playing' | 'gameOver';
 export type Action = 'click' | 'collision';
+export type ClickPosition = { clickX: number, clickY: number };
 
 export interface Elements {
-  background: GameElement;
-  pipePair: GameElement;
-  floor: GameElement;
-  flappy: GameElement;
-  score: GameElement;
-  screenReady: GameElement;
-  screenGameOver: GameElement;
+  background: Background;
+  pipePair: PipePair;
+  floor: Floor;
+  flappy: Flappy;
+  score: Score;
+  screenReady: ScreenReady;
+  screenGameOver: ScreenGameOver;
 }
 
 export class Game {
@@ -31,9 +31,7 @@ export class Game {
   private gameScreen: GameScreen;
   private isTapping: boolean;
 
-  constructor(
-    private context: CanvasRenderingContext2D,
-    ) {
+  constructor(private context: CanvasRenderingContext2D) {
     this.elements = Object()
     this.frames = 0;
     this.gameScreen = 'ready';
@@ -60,14 +58,20 @@ export class Game {
     }
   }
 
-  private setActionOccurrence(action: Action) {
+  private setActionOccurrence(action: Action, clickPosition: ClickPosition) {
     if (action === 'collision') {
       this.gameScreen = 'gameOver';
     }
 
-    if (action === 'click' && this.gameScreen !== 'playing') {
+    if (action === 'click' && this.gameScreen === 'ready') {
       this.gameScreen = 'playing';
-      this.registerElements();
+    }
+
+    if (action === 'click' && this.gameScreen === 'gameOver') {
+      if (this.elements.screenGameOver.verifyClickOnButton(clickPosition)) {
+        this.gameScreen = 'playing';
+        this.registerElements();
+      }
     }
   }
 
