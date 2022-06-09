@@ -1,14 +1,14 @@
-import { GameScreen } from './Game';
+import { Action } from './Game';
 import { GameElement, GameElementParams } from './GameElement';
 import { PipesPosition } from './PipePair';
 
-interface ActionParams {
-  isClicked: boolean;
-  pipesPositions: PipesPosition[][];
-  onFlappyCollision: (state: GameScreen) => void;
-}
+type OnFlappyCollision = (state: Action) => void;
 
-type OnFlappyCollision = (state: GameScreen) => void
+interface ActionParams {
+  isTapping: boolean;
+  pipesPositions: PipesPosition[][];
+  onFlappyCollision: OnFlappyCollision;
+}
 
 export class Flappy extends GameElement {
   private speed: number;
@@ -38,7 +38,7 @@ export class Flappy extends GameElement {
     if (isOverlap) {
       this.speed = 0;
       this.destY = this.destY
-      onFlappyCollision('gameOver')
+      onFlappyCollision('collision')
     }
   }
 
@@ -51,11 +51,11 @@ export class Flappy extends GameElement {
         const isPipeBottomHeightOverlaping = this.destY + this.destHeight >= pipeBottom.pipeY
 
         if (isLeftWidthOverlaping && isRightWidthOverlaping && isPipeTopHeightOverlaping) {
-          onFlappyCollision('gameOver');
+          onFlappyCollision('collision');
         }
 
         if (isLeftWidthOverlaping && isRightWidthOverlaping && isPipeBottomHeightOverlaping) {
-          onFlappyCollision('gameOver');
+          onFlappyCollision('collision');
         }
       })
     }
@@ -71,10 +71,10 @@ export class Flappy extends GameElement {
     }
   }
 
-  public action({ isClicked, pipesPositions, onFlappyCollision }: ActionParams): void {
+  public action({ isTapping, pipesPositions, onFlappyCollision }: ActionParams): void {
     this.verifyHitFloor(onFlappyCollision)
 
-    if (isClicked) {
+    if (isTapping) {
       this.speed = this.jump
     } else {
       this.speed += this.gravity;

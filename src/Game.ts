@@ -3,25 +3,36 @@ import { Elements } from './main';
 
 export type GameScreen = 'ready' | 'playing' | 'gameOver'
 
+
+export type Action = 'click' | 'collision'
 export class Game {
   private gameScreen: GameScreen = 'ready'
   private frames: number;
-  private isClicked: boolean;
+  private gameScreen: GameScreen;
+  private isTapping: boolean;
 
   constructor(
     private context: CanvasRenderingContext2D,
     private elements: Elements,
     ) {
     this.frames = 0;
-    this.isClicked = false
+    this.gameScreen = 'ready';
+    this.isTapping = false;
   }
 
   private clearScreen() {
     this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height)
   }
 
-  private setGameState(state: GameScreen) {
-    this.gameScreen = state;
+  private setGameState(action: Action) {
+    if (action === 'collision') {
+      this.gameScreen = 'gameOver';
+    }
+
+    if (action === 'click' && this.gameScreen !== 'playing') {
+      this.gameScreen = 'playing';
+      this.registerElements();
+    }
   }
 
   private registerFrames() {
@@ -29,10 +40,10 @@ export class Game {
     if (this.frames === 300) this.frames = 0
   }
 
-  private setIsClicked(timer: number | undefined) {
-    this.isClicked = true;
+  private setIsTapping(timer: number | undefined) {
+    this.isTapping = true;
     if (timer) clearTimeout(timer)
-    timer = setTimeout(() => this.isClicked = false, 150);
+    timer = setTimeout(() => this.isTapping = false, 150);
   }
 
   registerInputs() {
@@ -51,7 +62,7 @@ export class Game {
 
       if (this.gameScreen === 'playing') {
         element.action({
-          isClicked: this.isClicked,
+          isTapping: this.isTapping,
           frames: this.frames,
           pipesPositions: elements.pipePair.getPositions(),
           onFlappyCollision: this.setGameState.bind(this)
