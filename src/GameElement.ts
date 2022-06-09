@@ -38,7 +38,7 @@ export class GameElement {
   
   public drawImage(params?: DrawImageParams): void {
     this.elementInfo.context.drawImage(
-      this.elementInfo.source,
+      this.elementInfo.source!,
       params?.sourceX || this.sourceX,
       params?.sourceY || this.sourceY,
       params?.sourceWidth || this.sourceWidth,

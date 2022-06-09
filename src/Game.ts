@@ -1,5 +1,4 @@
 import { Inputs } from './Inputs';
-import { Elements } from './main';
 import { Flappy } from './Flappy';
 import { Floor } from './Floor';
 import { Background } from './Background';
@@ -10,9 +9,21 @@ import { ScreenReady } from './ScreenReady';
 import { ScreenGameOver } from './ScreenGameOver';
 import { Sprites } from './Sprites';
 import spritesFile from './assets/sprites.png'
+import { Score } from './Score';
+import { GameElement } from './GameElement';
 
 export type GameScreen = 'ready' | 'playing' | 'gameOver';
-export type Action = 'click' | 'collision'
+export type Action = 'click' | 'collision';
+
+export interface Elements {
+  background: GameElement;
+  pipePair: GameElement;
+  floor: GameElement;
+  flappy: GameElement;
+  score: GameElement;
+  screenReady: GameElement;
+  screenGameOver: GameElement;
+}
 
 export class Game {
   private elements: Elements;
@@ -43,6 +54,7 @@ export class Game {
       pipePair: new PipePair(elementInfo, pipeTop, pipeBottom),
       floor: new Floor(elementInfo),
       flappy: new Flappy(elementInfo),
+      score: new Score(elementInfo),
       screenReady: new ScreenReady(elementInfo),
       screenGameOver: new ScreenGameOver(elementInfo),
     }
