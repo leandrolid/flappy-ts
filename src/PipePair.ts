@@ -8,7 +8,7 @@ export interface PipesPosition { name: string; pipeX: number; pipeY: number; }
 export class PipePair extends GameElement {
   private positions: Position[];
   private spacing: number;
-  private pipes: PipesPosition[];
+  private pipes: PipesPosition[][];
 
   constructor(elementInfo: GameElementParams, private pipeTop: PipeTop, private pipeBottom: PipeBottom) {
     super(elementInfo);
@@ -46,11 +46,12 @@ export class PipePair extends GameElement {
 
   private setPipesPosition() {
     if (this.positions.length) {
-      const [first] = this.positions;
-      this.pipes = [
-        { name: 'top', pipeX: first.x, pipeY: this.pipeTop.destHeight + first.y },
-        { name: 'bottom', pipeX: first.x, pipeY: this.pipeBottom.destHeight + this.spacing + first.y },
-      ]
+      const pipes = this.positions.map((position) => ([
+          { name: 'top', pipeX: position.x, pipeY: this.pipeTop.destHeight + position.y },
+          { name: 'bottom', pipeX: position.x, pipeY: this.pipeBottom.destHeight + this.spacing + position.y },
+      ]))
+
+      this.pipes = pipes;
     }
   }
 

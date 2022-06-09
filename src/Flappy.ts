@@ -4,7 +4,7 @@ import { PipesPosition } from './PipePair';
 
 interface ActionParams {
   isClicked: boolean;
-  pipesPositions: PipesPosition[];
+  pipesPositions: PipesPosition[][];
   onFlappyCollision: (state: GameScreen) => void;
 }
 
@@ -42,21 +42,22 @@ export class Flappy extends GameElement {
     }
   }
 
-  private verifyHitPipes(pipesPositions: PipesPosition[], onFlappyCollision: OnFlappyCollision) {
+  private verifyHitPipes(pipesPositions: PipesPosition[][], onFlappyCollision: OnFlappyCollision) {
     if (pipesPositions.length) {
-      const [ pipeTop, pipeBottom ] = pipesPositions;
-      const isLeftWidthOverlaping = this.destX + this.destWidth >= pipeTop.pipeX || this.destX >= pipeTop.pipeX
-      const isRightWidthOverlaping = this.destX + this.destWidth <= pipeTop.pipeX + 52 || this.destX <= pipeTop.pipeX
-      const isPipeTopHeightOverlaping = this.destY <= pipeTop.pipeY
-      const isPipeBottomHeightOverlaping = this.destY + this.destHeight >= pipeBottom.pipeY
-      
-      if (isLeftWidthOverlaping && isRightWidthOverlaping && isPipeTopHeightOverlaping) {
-        onFlappyCollision('gameOver');
-      }
+      pipesPositions.forEach(([ pipeTop, pipeBottom ]) => {
+        const isLeftWidthOverlaping = this.destX + this.destWidth >= pipeTop.pipeX || this.destX >= pipeTop.pipeX
+        const isRightWidthOverlaping = this.destX + this.destWidth <= pipeTop.pipeX + 52 || this.destX <= pipeTop.pipeX
+        const isPipeTopHeightOverlaping = this.destY <= pipeTop.pipeY
+        const isPipeBottomHeightOverlaping = this.destY + this.destHeight >= pipeBottom.pipeY
 
-      if (isLeftWidthOverlaping && isRightWidthOverlaping && isPipeBottomHeightOverlaping) {
-        onFlappyCollision('gameOver');
-      }
+        if (isLeftWidthOverlaping && isRightWidthOverlaping && isPipeTopHeightOverlaping) {
+          onFlappyCollision('gameOver');
+        }
+
+        if (isLeftWidthOverlaping && isRightWidthOverlaping && isPipeBottomHeightOverlaping) {
+          onFlappyCollision('gameOver');
+        }
+      })
     }
   }
 
