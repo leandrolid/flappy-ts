@@ -11,13 +11,10 @@ export class Inputs {
 
   public onPlayerStart(setActionOccurrence: (state: Action, clickPosition: ClickPosition) => void) {
     const canvas = Canvas.getCanvas();
-    canvas.addEventListener('click', ({ clientX: clickX, clientY: clickY }) => {
+    canvas.addEventListener('click', ({ offsetX: clickX, offsetY: clickY}) => {
       setActionOccurrence('click', { clickX, clickY })
     })
-    canvas.addEventListener('touchstart', ({ touches }) => {
-      const { clientX: clickX, clientY: clickY } = touches[0];
-      setActionOccurrence('click', { clickX, clickY })
-    })
+
     window.addEventListener('keypress', () => setActionOccurrence('click', { clickX: 0, clickY: 0 }))
   }
 }
