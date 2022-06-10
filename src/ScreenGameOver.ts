@@ -1,6 +1,10 @@
 import { ClickPosition } from './Game';
 import { DrawImageParams, GameElement, GameElementParams } from './GameElement';
 
+interface ScreenGameOverDrawImageParams extends DrawImageParams {
+  frames: number;
+}
+
 export class ScreenGameOver extends GameElement {
   private points: { current: number; best: number };
   private button: { x: number; y: number; width: number; height: number; }
@@ -84,11 +88,11 @@ export class ScreenGameOver extends GameElement {
     }
   }
 
-  public drawImage(params?: DrawImageParams, frames?: number): void {
+  public drawImage(params: ScreenGameOverDrawImageParams): void {
     super.drawImage(params);
     this.setPoints();
     this.setCoinForPointsRange();
-    this.animateButtonBorder(frames!);
+    this.animateButtonBorder(params.frames);
 
     this.drawPoints(this.points.current, this.destY + 95);
     this.drawPoints(this.points.best, this.destY + 135);
