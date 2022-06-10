@@ -15,9 +15,12 @@ class App {
     game.initialize()
   }
 
-  main() {
+  public start() {
     this.registerGame()
   }
 }
 
-new App().main();
+window.onload = () => {
+  const app = new App();
+  app.start();
+};
