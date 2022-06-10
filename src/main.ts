@@ -16,7 +16,6 @@ class App {
   }
 
   main() {
-    // this.registerElements()
     this.registerGame()
   }
 }

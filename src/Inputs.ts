@@ -18,5 +18,6 @@ export class Inputs {
       const { clientX: clickX, clientY: clickY } = touches[0];
       setActionOccurrence('click', { clickX, clickY })
     })
+    window.addEventListener('keypress', () => setActionOccurrence('click', { clickX: 0, clickY: 0 }))
   }
 }
