@@ -2,7 +2,8 @@ import { ClickPosition } from './Game';
 import { DrawImageParams, GameElement, GameElementParams } from './GameElement';
 
 export class ScreenGameOver extends GameElement {
-  private points: { current: number; best: number }
+  private points: { current: number; best: number };
+  private button: { x: number; y: number; width: number; height: number; }
 
   constructor(elementInfo: GameElementParams) {
     super(elementInfo);
@@ -15,16 +16,31 @@ export class ScreenGameOver extends GameElement {
     this.destWidth = this.sourceWidth;
     this.destHeight = this.sourceHeight;
     this.points = { current: 0, best: 0 };
+    this.button = { x: this.destX + 73, y: this.destY + this.destHeight - 29, width: 82, height: 28 }
   }
 
-  public verifyClickOnButton({ clickX, clickY }: ClickPosition) { // 
-    const button = {
-      x: this.destX + 73,
-      y: this.destY + this.destHeight - 29,
-      width: 82,
-      height: 28,
-    }
-    if(clickX >= button.x && clickX <= button.x + button.width && clickY >= button.y && clickY <= button.y + button.height){
+  private drawButton(buttonColor: string) {
+    this.elementInfo.context.beginPath();
+    this.elementInfo.context.strokeStyle = buttonColor;
+    this.elementInfo.context.lineWidth = 3;
+    this.elementInfo.context.strokeRect(this.button.x, this.button.y, this.button.width, this.button.height);
+    this.elementInfo.context.closePath();
+  }
+
+  private animateButtonBorder(frames: number) {
+    const isCyclePassed = frames % 15 === 0;
+
+    if (isCyclePassed) this.drawButton('#ffffff')
+    this.drawButton('#ffffff00');
+  }
+
+  public verifyClickOnButton({ clickX, clickY }: ClickPosition) {
+    if(
+      clickX >= this.button.x
+      && clickX <= this.button.x + this.button.width
+      && clickY >= this.button.y
+      && clickY <= this.button.y + this.button.height
+      ){
       return true;
     }
 
@@ -68,12 +84,13 @@ export class ScreenGameOver extends GameElement {
     }
   }
 
-  public drawImage(params?: DrawImageParams): void {
-      super.drawImage(params);
-      this.setPoints();
-      this.setCoinForPointsRange();
+  public drawImage(params?: DrawImageParams, frames?: number): void {
+    super.drawImage(params);
+    this.setPoints();
+    this.setCoinForPointsRange();
+    this.animateButtonBorder(frames!);
 
-      this.drawPoints(this.points.current, this.destY + 95);
-      this.drawPoints(this.points.best, this.destY + 135);
+    this.drawPoints(this.points.current, this.destY + 95);
+    this.drawPoints(this.points.best, this.destY + 135);
   }
 }

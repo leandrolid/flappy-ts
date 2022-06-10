@@ -110,7 +110,7 @@ export class Game {
       }
     }
 
-    if (this.gameScreen === 'gameOver') screenGameOver.drawImage()
+    if (this.gameScreen === 'gameOver') screenGameOver.drawImage({}, this.frames)
     if (this.gameScreen === 'ready') screenReady.drawImage()
 
     this.registerFrames();

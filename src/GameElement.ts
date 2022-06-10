@@ -35,7 +35,7 @@ export class GameElement {
     this.destHeight = 0;
   }
   
-  public drawImage(params?: DrawImageParams): void {
+  public drawImage(params?: DrawImageParams, ..._any: any): void {
     this.elementInfo.context.drawImage(
       this.elementInfo.source!,
       params?.sourceX || this.sourceX,
