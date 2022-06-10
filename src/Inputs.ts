@@ -14,6 +14,9 @@ export class Inputs {
     canvas.addEventListener('click', ({ clientX: clickX, clientY: clickY }) => {
       setActionOccurrence('click', { clickX, clickY })
     })
-    // canvas.addEventListener('touchstart', ({  }) => setActionOccurrence('click'))
+    canvas.addEventListener('touchstart', ({ touches }) => {
+      const { clientX: clickX, clientY: clickY } = touches[0];
+      setActionOccurrence('click', { clickX, clickY })
+    })
   }
 }
