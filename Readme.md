@@ -36,7 +36,7 @@ O app foi feito usando TypeScript e o Vite para realizar a transpilação para J
 <br>
 
 <p align="center">
-<img src=".github/flappy-ts.gif" height="480" src="Imagem do aplicativo de feedback" />
+<img src=".github/flappy-ts.gif" height="480" alt="Imagem do aplicativo de feedback" />
 </p>
 
 ## Tecnologias
